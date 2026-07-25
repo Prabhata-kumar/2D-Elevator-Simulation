@@ -152,12 +152,12 @@ TextureImporter:
       name: button system_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 0
-        width: 743
-        height: 1024
+        x: 998
+        y: 672
+        width: 121
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -174,12 +174,12 @@ TextureImporter:
       name: button system_1
       rect:
         serializedVersion: 2
-        x: 727
-        y: 381
-        width: 778
-        height: 643
+        x: 998
+        y: 672
+        width: 121
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -196,12 +196,12 @@ TextureImporter:
       name: button system_2
       rect:
         serializedVersion: 2
-        x: 830
-        y: 512
-        width: 131
-        height: 121
+        x: 1158
+        y: 674
+        width: 117
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -218,12 +218,12 @@ TextureImporter:
       name: button system_3
       rect:
         serializedVersion: 2
-        x: 830
-        y: 329
-        width: 131
-        height: 147
+        x: 840
+        y: 515
+        width: 117
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -241,11 +241,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 838
-        y: 641
-        width: 123
-        height: 150
+        y: 673
+        width: 121
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -262,12 +262,12 @@ TextureImporter:
       name: button system_5
       rect:
         serializedVersion: 2
-        x: 992
-        y: 317
-        width: 129
-        height: 158
+        x: 999
+        y: 515
+        width: 118
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -284,12 +284,12 @@ TextureImporter:
       name: button system_6
       rect:
         serializedVersion: 2
-        x: 994
-        y: 659
-        width: 127
-        height: 133
+        x: 1156
+        y: 517
+        width: 118
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -306,12 +306,12 @@ TextureImporter:
       name: button system_7
       rect:
         serializedVersion: 2
-        x: 995
-        y: 509
-        width: 126
-        height: 137
+        x: 840
+        y: 358
+        width: 118
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -328,12 +328,12 @@ TextureImporter:
       name: button system_8
       rect:
         serializedVersion: 2
-        x: 1140
-        y: 501
-        width: 138
-        height: 149
+        x: 1000
+        y: 357
+        width: 118
+        height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -347,37 +347,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: button system_9
-      rect:
-        serializedVersion: 2
-        x: 1151
-        y: 335
-        width: 130
-        height: 138
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7450d34a2a0b9bee0800000000000000
-      internalID: -1244769609404578489
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: button system_10
       rect:
         serializedVersion: 2
-        x: 829
-        y: 1
-        width: 148
-        height: 312
+        x: 1155
+        y: 357
+        width: 118
+        height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -394,12 +372,12 @@ TextureImporter:
       name: button system_11
       rect:
         serializedVersion: 2
-        x: 991
-        y: 1
-        width: 130
-        height: 312
+        x: 999
+        y: 191
+        width: 118
+        height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -412,33 +390,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: button system_12
-      rect:
-        serializedVersion: 2
-        x: 1140
-        y: 1
-        width: 365
-        height: 321
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 33a9617e753042170800000000000000
-      internalID: 8152644901521496627
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f2193a43d561ea9448b745753d8d765e
     internalID: 0
     vertices: []
     indices: 
