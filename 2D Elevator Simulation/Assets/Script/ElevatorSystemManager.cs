@@ -14,52 +14,54 @@ namespace ElevatorSim
         public static ElevatorSystemManager Instance { get; private set; }
 
         [SerializeField] private List<ElevatorController> elevators;
+        public List<ElevatorController> Elevators => elevators;
 
-        [Header("Floor positions")]
-        [Tooltip("Drag one empty GameObject per floor, positioned exactly where you want elevators to stop. Index 0 = Ground.")]
+        [Header("Floor Markers")]
         [SerializeField] private Transform[] floorMarkers;
+        [SerializeField] private float defaultFloorHeight = 150f;
 
-        private readonly Dictionary<(int floor, Direction dir), CallButton> buttonRegistry = new();
-        private readonly HashSet<(int floor, Direction dir)> pendingRequests = new();
+        public event System.Action<int, ElevatorController> OnElevatorDoorsOpened;
 
-        private void Awake()
+        public void NotifyDoorsOpened(int floor, ElevatorController elevator)
         {
-            Instance = this;
+            OnElevatorDoorsOpened?.Invoke(floor, elevator);
         }
 
-        public int FloorCount => floorMarkers.Length;
-
-        /// <summary>
-        /// World Y position an elevator should stop at for a given floor index.
-        /// </summary>
         public float GetFloorY(int floor)
         {
-            if (floor < 0 || floor >= floorMarkers.Length)
-            {
-                Debug.LogError($"Floor {floor} has no marker assigned in ElevatorSystemManager.");
-                return 0f;
-            }
-            return floorMarkers[floor].position.y;
+            if (floorMarkers != null && floor >= 0 && floor < floorMarkers.Length && floorMarkers[floor] != null)
+                return floorMarkers[floor].position.y;
+            return floor * defaultFloorHeight; 
         }
 
-        /// <summary>
-        /// Which floor index is closest to a given world Y — used by
-        /// ElevatorController to know what floor it's currently passing.
-        /// </summary>
-        public int GetNearestFloorIndex(float worldY)
+        public int GetNearestFloor(float currentY)
         {
+            if (floorMarkers == null || floorMarkers.Length == 0)
+                return Mathf.RoundToInt(currentY / defaultFloorHeight);
+            
             int nearest = 0;
-            float bestDist = float.MaxValue;
-            for (int i = 0; i < floorMarkers.Length; i++)
+            float minD = float.MaxValue;
+            for (int i = 0; i < floorMarkers.Length; i++) 
             {
-                float dist = Mathf.Abs(floorMarkers[i].position.y - worldY);
-                if (dist < bestDist)
+                if (floorMarkers[i] == null) continue;
+                float d = Mathf.Abs(floorMarkers[i].position.y - currentY);
+                if (d < minD) 
                 {
-                    bestDist = dist;
+                    minD = d;
                     nearest = i;
                 }
             }
             return nearest;
+        }
+
+        private readonly Dictionary<(int floor, Direction dir), CallButton> buttonRegistry = new();
+        private readonly HashSet<(int floor, Direction dir)> pendingRequests = new();
+        
+        private WaitForSeconds assignWait = new WaitForSeconds(0.5f);
+
+        private void Awake()
+        {
+            Instance = this;
         }
 
         public void RegisterButton(int floor, Direction direction, CallButton button)
@@ -76,59 +78,85 @@ namespace ElevatorSim
             if (pendingRequests.Contains(key))
                 return; // already being handled
 
-            ElevatorController best = FindBestElevator(floor, direction);
-            if (best == null) return;
-
             pendingRequests.Add(key);
-            best.AddRequest(floor);
 
-            if (buttonRegistry.TryGetValue(key, out var button))
-                button.SetState(CallButtonState.Waiting);
+            if (buttonRegistry.TryGetValue(key, out var btn))
+                btn.SetState(CallButtonState.Waiting);
 
-            StartCoroutine(TrackRequestLifecycle(best, floor, key));
+            StartCoroutine(TryAssignRequest(floor, direction, key));
         }
 
-        private ElevatorController FindBestElevator(int floor, Direction direction)
+        private System.Collections.IEnumerator TryAssignRequest(int floor, Direction direction, (int floor, Direction dir) key)
         {
             ElevatorController best = null;
+            
+            // Keep trying until we find an elevator that has room!
+            while (best == null)
+            {
+                best = FindBestElevator(floor, direction);
+                if (best == null)
+                    yield return assignWait;
+            }
+
+            // FIX: Check if the elevator is already perfectly idle on this floor!
+            if (best.CurrentFloor == floor && best.IsIdle)
+            {
+                best.AddRequest(floor); // Triggers doors to open
+                
+                // Immediately reset the button
+                if (buttonRegistry.TryGetValue(key, out var button))
+                    button.SetState(CallButtonState.Idle);
+                
+                pendingRequests.Remove(key);
+                yield break; 
+            }
+
+            best.AddRequest(floor);
+
+            // Red -> Green: wait until this floor becomes the elevator's next stop.
+            while (best != null && best.gameObject.activeInHierarchy && best.CurrentTargetFloor != floor)
+                yield return null;
+
+            // If the elevator was deactivated while we were waiting, abort safely!
+            if (best == null || !best.gameObject.activeInHierarchy)
+            {
+                pendingRequests.Remove(key);
+                if (buttonRegistry.TryGetValue(key, out var btn)) btn.SetState(CallButtonState.Idle);
+                yield break;
+            }
+
+            if (buttonRegistry.TryGetValue(key, out var activeBtn))
+                activeBtn.SetState(CallButtonState.Active);
+
+            // Green -> Idle: wait until the elevator actually arrives.
+            while (best != null && best.gameObject.activeInHierarchy && best.CurrentFloor != floor)
+                yield return null;
+
+            pendingRequests.Remove(key);
+            if (buttonRegistry.TryGetValue(key, out var idleBtn))
+                idleBtn.SetState(CallButtonState.Idle);
+        }
+
+        private ElevatorController FindBestElevator(int floor, Direction dir)
+        {
+            ElevatorController bestElevator = null;
             int bestCost = int.MaxValue;
 
             foreach (var elevator in elevators)
             {
-                int cost = elevator.GetEtaCost(floor, direction);
+                // Ignore elevators that are disabled in the Hierarchy!
+                if (!elevator.gameObject.activeInHierarchy) 
+                    continue;
+
+                int cost = elevator.GetEtaCost(floor, dir);
                 if (cost < bestCost)
                 {
                     bestCost = cost;
-                    best = elevator;
+                    bestElevator = elevator;
                 }
             }
-            return best;
-        }
 
-        /// <summary>
-        /// Waits for the assigned elevator to commit to this floor as its
-        /// immediate next stop (button turns green), then waits for arrival
-        /// (button resets to idle, request cleared, button re-enabled).
-        /// </summary>
-        private System.Collections.IEnumerator TrackRequestLifecycle(
-            ElevatorController elevator, int floor, (int floor, Direction dir) key)
-        {
-            buttonRegistry.TryGetValue(key, out var button);
-
-            // Red -> Green: wait until this floor becomes the elevator's next stop.
-            while (elevator.CurrentTargetFloor != floor)
-                yield return null;
-
-            button?.SetState(CallButtonState.Active);
-
-            // Green -> Idle: wait until the elevator actually arrives.
-            // (CurrentFloor only updates to the target AFTER it's popped off
-            // the queue, so this alone is a reliable arrival signal.)
-            while (elevator.CurrentFloor != floor)
-                yield return null;
-
-            pendingRequests.Remove(key);
-            button?.SetState(CallButtonState.Idle);
+            return bestElevator;
         }
     }
 }
