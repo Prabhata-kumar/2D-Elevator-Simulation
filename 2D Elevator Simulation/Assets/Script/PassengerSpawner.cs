@@ -10,7 +10,7 @@ namespace ElevatorSim
 
         [Header("Setup")]
         public GameObject passengerPrefab;
-        public bool autoSpawnEnabled = true;
+        public bool autoSpawnEnabled = false; // Default to MANUAL on start as requested!
         
         [Header("Spawn Timing")]
         [Tooltip("Use the slider to make them spawn faster or slower")]

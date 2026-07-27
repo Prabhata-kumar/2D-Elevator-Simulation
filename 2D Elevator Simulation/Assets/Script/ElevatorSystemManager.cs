@@ -13,8 +13,12 @@ namespace ElevatorSim
     {
         public static ElevatorSystemManager Instance { get; private set; }
 
-        [SerializeField] private List<ElevatorController> elevators;
-        public List<ElevatorController> Elevators => elevators;
+        [Header("Elevators")]
+        [SerializeField] private ElevatorController[] elevators;
+        public ElevatorController[] Elevators => elevators;
+
+        [Header("System Mode")]
+        public bool isAutomated = false;
 
         [Header("Floor Markers")]
         [SerializeField] private Transform[] floorMarkers;
@@ -62,6 +66,25 @@ namespace ElevatorSim
         private void Awake()
         {
             Instance = this;
+        }
+
+        private void Start()
+        {
+            // Sync with Spawner on start
+            if (PassengerSpawner.Instance != null)
+            {
+                PassengerSpawner.Instance.autoSpawnEnabled = isAutomated;
+            }
+        }
+
+        public void ToggleAutomated()
+        {
+            isAutomated = !isAutomated;
+            if (PassengerSpawner.Instance != null)
+            {
+                PassengerSpawner.Instance.autoSpawnEnabled = isAutomated;
+            }
+            Debug.Log($"Antigravity: Elevator System is now {(isAutomated ? "AUTOMATED" : "MANUAL")}");
         }
 
         public void RegisterButton(int floor, Direction direction, CallButton button)

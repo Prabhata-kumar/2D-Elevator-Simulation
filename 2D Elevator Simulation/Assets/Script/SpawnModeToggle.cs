@@ -31,19 +31,18 @@ namespace ElevatorSim
 
         private void OnToggleClicked()
         {
-            if (PassengerSpawner.Instance != null)
+            if (ElevatorSystemManager.Instance != null)
             {
-                // Flip the boolean
-                PassengerSpawner.Instance.autoSpawnEnabled = !PassengerSpawner.Instance.autoSpawnEnabled;
+                ElevatorSystemManager.Instance.ToggleAutomated();
                 UpdateButtonUI();
             }
         }
 
         private void UpdateButtonUI()
         {
-            if (PassengerSpawner.Instance != null && buttonText != null)
+            if (ElevatorSystemManager.Instance != null && buttonText != null)
             {
-                if (PassengerSpawner.Instance.autoSpawnEnabled)
+                if (ElevatorSystemManager.Instance.isAutomated)
                 {
                     buttonText.text = "Mode: AUTO";
                     buttonText.color = new Color(0.1f, 0.8f, 0.1f); // Nice Green

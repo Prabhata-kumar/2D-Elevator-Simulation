@@ -1123,6 +1123,10 @@ PrefabInstance:
       propertyPath: floorIndex
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4963547992256828414, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1452624967119126561, guid: f07f4145a9f4f944ea6cd28baa02dee8, type: 3}
     - target: {fileID: 6769667695609299600, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
       propertyPath: m_Name
       value: Button (4)
@@ -2632,7 +2636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passengerPrefab: {fileID: 58090428237782757, guid: 28c79afa078ec1e45bff4d0588ffbe17, type: 3}
-  autoSpawnEnabled: 1
+  autoSpawnEnabled: 0
   spawnInterval: 0.83
   useRandomInterval: 1
   minSpawnInterval: 0.5
@@ -3357,6 +3361,10 @@ PrefabInstance:
       propertyPath: floorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4963547992256828414, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 5001811927321598823, guid: f07f4145a9f4f944ea6cd28baa02dee8, type: 3}
     - target: {fileID: 6769667695609299600, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
       propertyPath: m_Name
       value: Button (2)
@@ -5796,6 +5804,10 @@ PrefabInstance:
       propertyPath: floorIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4963547992256828414, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3222887665525223007, guid: f07f4145a9f4f944ea6cd28baa02dee8, type: 3}
     - target: {fileID: 6769667695609299600, guid: 6c94999d9d258ce4d82fa250ec3e788f, type: 3}
       propertyPath: m_Name
       value: Button (3)
@@ -6000,6 +6012,7 @@ MonoBehaviour:
   - {fileID: 208873520}
   - {fileID: 1498839626}
   - {fileID: 1901435893}
+  isAutomated: 0
   floorMarkers:
   - {fileID: 950913385}
   - {fileID: 1811876199}
